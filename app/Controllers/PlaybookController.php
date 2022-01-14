@@ -198,15 +198,17 @@ class PlaybookController
 	{
 		Command::run("rm /var/playbooks/test.txt");
 		Command::run("touch /var/playbooks/test.txt");
-		Command::runSudo(
+		$itemArray = explode('.', trim(request('filename')));
+		if($itemArray[1]=="yml"){
+			Command::runSudo(
 			"sed -i 's/hosts: .*/hosts: {:group}/g' /var/playbooks/{:filename}",
 			[
 				'filename' => request('filename'),
 				'group' => request('group')
 			]
-		);
-
-		return respond(
+			);
+			
+			return respond(
 			view('task', [
 				'onFail' => 'onTaskFail',
 				'tasks' => [
@@ -222,6 +224,9 @@ class PlaybookController
 			]),
 			200
 		);
+		}else{
+			return respond('Bu dosya çalıştırılmaya uygun değildir..!', 201);
+		}
 	}
 
 	public static function getHostsSelect()

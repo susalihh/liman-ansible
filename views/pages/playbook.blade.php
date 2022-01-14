@@ -98,8 +98,8 @@
             $('#playbookTaskModal').modal("show"); 
             Swal.close();
         }, function(response) {
-            let error = JSON.parse(response).message
-            showSwal(error, 'error');
+            let error = JSON.parse(response);
+            showSwal(error.message, 'error', 3000);
         });
 
         $('#playbookTaskModal').on('hidden.bs.modal',  () => {
